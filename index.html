@@ -30,8 +30,10 @@
     const FileText = ({size=24, className=""}) => (<svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>);
 
     // === 設定データ ===
+    // ★ 「終日」を追加
     const timeOptions = [
       { value: '', label: '--:--' },
+      { value: '終日', label: '終日' },
       { value: 'AM', label: 'AM' },
       { value: 'PM', label: 'PM' }
     ];
@@ -151,20 +153,22 @@
             let timeStr = "";
             const s = slot.startTime;
             const e = slot.endTime;
-            const isAmPmS = s === 'AM' || s === 'PM';
-            const isAmPmE = e === 'AM' || e === 'PM';
+            
+            // ★ 特殊な単語（〜をつけない）の判定リストに「終日」を追加
+            const specialWords = ['終日', 'AM', 'PM'];
+            const isSpecialS = specialWords.includes(s);
+            const isSpecialE = specialWords.includes(e);
 
-            // AM/PMが選ばれている場合の特別処理
             if (s && e) {
-              if (isAmPmS && isAmPmE) {
-                timeStr = ` ${s}・${e}`; // 例: AM・PM
+              if (isSpecialS && isSpecialE) {
+                timeStr = ` ${s}・${e}`; // 例: 終日・AM
               } else {
                 timeStr = ` ${s}〜${e}`;
               }
             } else if (s) {
-              timeStr = isAmPmS ? ` ${s}` : ` ${s}〜`; // AMのみなら「〜」を消す
+              timeStr = isSpecialS ? ` ${s}` : ` ${s}〜`;
             } else if (e) {
-              timeStr = isAmPmE ? ` ${e}` : ` 〜${e}`; // PMのみなら「〜」を消す
+              timeStr = isSpecialE ? ` ${e}` : ` 〜${e}`;
             }
             
             text += `${bullet}${dateStr}${timeStr}\n`;
