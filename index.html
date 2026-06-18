@@ -10,12 +10,12 @@
   <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.23.8/babel.min.js"></script>
 </head>
 <body>
   <div id="root"></div>
 
-  <script type="text/babel">
+  <script type="text/babel" data-presets="react">
     const { useState, useEffect, useMemo } = React;
     const { createRoot } = ReactDOM;
 
@@ -30,7 +30,6 @@
     const FileText = ({size=24, className=""}) => (<svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>);
 
     // === 設定データ ===
-    // ★ 「終日」を追加
     const timeOptions = [
       { value: '', label: '--:--' },
       { value: '終日', label: '終日' },
@@ -154,7 +153,7 @@
             const s = slot.startTime;
             const e = slot.endTime;
             
-            // ★ 特殊な単語（〜をつけない）の判定リストに「終日」を追加
+            // 特殊な単語（〜をつけない）の判定リスト
             const specialWords = ['終日', 'AM', 'PM'];
             const isSpecialS = specialWords.includes(s);
             const isSpecialE = specialWords.includes(e);
